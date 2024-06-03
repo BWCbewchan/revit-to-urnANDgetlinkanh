@@ -6,17 +6,23 @@ from flask import Flask, request, jsonify, render_template
 from pymongo import MongoClient
 
 app = Flask(__name__)
+
+# Cấu hình thư mục tải lên
 app.config['UPLOAD_FOLDER'] = 'uploads'
+
+# Đảm bảo thư mục tải lên tồn tại
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+
+# Cấu hình Imgur
+IMGUR_CLIENT_ID = 'f8b1f35e5690a24'
+IMGUR_CLIENT_SECRET = '59213a42ba249f295354daf2f2f12a980dc009e6'
 
 client_id = '8nDGPR55nVA4GWG46L7kayavng4osxT1V2HGAOMBCRQH692R'
 client_secret = 'jyxdCnzmGoSz7tQSLo1OAgGGSIwuy2zUg5rbAMzLNpyyR62Innx0vJnMLc0odAuI'
 
 mongo_client = MongoClient('mongodb+srv://ngophuc2911:phuc29112003@cluster0.buhheri.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = mongo_client['test']
-
-# Ensure the upload folder exists
-if not os.path.exists(app.config['UPLOAD_FOLDER']):
-    os.makedirs(app.config['UPLOAD_FOLDER'])
 
 def get_access_token():
     auth_url = 'https://developer.api.autodesk.com/authentication/v1/authenticate'
@@ -68,6 +74,20 @@ def translate_file(access_token, bucket_key, object_name):
     response = requests.post(translate_url, headers=headers, json=translate_data, timeout=10)
     response.raise_for_status()
     return urn
+
+def upload_to_imgur(image_file):
+    headers = {
+        'Authorization': f'Client-ID {IMGUR_CLIENT_ID}'
+    }
+    files = {
+        'image': image_file.read()
+    }
+    response = requests.post('https://api.imgur.com/3/upload', headers=headers, files=files)
+    response_data = response.json()
+    if response_data['success']:
+        return response_data['data']['link']
+    else:
+        return None
 
 @app.route('/')
 def index():
@@ -121,13 +141,10 @@ def upload_file():
 
         urn = translate_file(access_token, bucket_key, rvt_filename)
 
-        # Lưu file hình ảnh vào thư mục upload
-        image_filename = image_file.filename
-        image_file_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
-        image_file.save(image_file_path)
-
-        # Đường dẫn tuyệt đối của hình ảnh được lưu
-        absolute_image_path = os.path.abspath(image_file_path)
+        # Upload ảnh lên Imgur
+        image_url = upload_to_imgur(image_file)
+        if not image_url:
+            return jsonify({'message': 'Image upload failed'}), 500
 
         selected_collection = db[collection_name]
         doc = {
@@ -135,11 +152,11 @@ def upload_file():
             'location': location,
             'urn': urn,
             'filename': rvt_filename,
-            'linkanh': absolute_image_path
+            'linkanh': image_url
         }
         selected_collection.insert_one(doc)
 
-        return jsonify({'urn': urn})
+        return jsonify({'urn': urn, 'image_url': image_url})
 
     except Exception as e:
         return jsonify({'message': str(e)}), 500

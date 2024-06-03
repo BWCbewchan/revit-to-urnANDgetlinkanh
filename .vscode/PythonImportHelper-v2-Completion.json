@@ -181,7 +181,7 @@
         "kind": 2,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "def upload_image(image_file_path):\n    options = webdriver.ChromeOptions()\n    options.add_argument('--headless')\n    options.add_argument('--no-sandbox')\n    options.add_argument('--disable-dev-shm-usage')\n    options.binary_location = os.path.join(\"/opt/render/project/.render/chrome/opt/google/chrome/\")\n    try:\n        driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)\n    except Exception as e:\n        return f\"An error occurred initializing WebDriver: {e}\"",
+        "peekOfCode": "def upload_image(image_file_path):\n    options = webdriver.ChromeOptions()\n    options.add_argument('--headless')\n    options.add_argument('--no-sandbox')\n    options.add_argument('--disable-dev-shm-usage')\n    options.binary_location = os.path.join(\"/opt/render/project/.render/chrome/opt/google/chrome/\")\n    try:\n        driver = webdriver.Chrome(ChromeDriverManager(version='114.0.5735.90').install(),options=options)\n    except Exception as e:\n        return f\"An error occurred initializing WebDriver: {e}\"",
         "detail": "app",
         "documentation": {}
     },

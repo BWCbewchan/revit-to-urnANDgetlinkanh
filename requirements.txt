@@ -8,4 +8,3 @@ Werkzeug==2.0.3
 pymongo[srv]
 webdriver_manager
 --upgrade webdriver-manager
-install_chrome.sh

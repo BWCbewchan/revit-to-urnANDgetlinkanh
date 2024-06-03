@@ -84,10 +84,11 @@ def upload_image(image_file_path):
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
+    options.add_argument('--remote-debugging-pipe')
     options.add_argument('--disable-dev-shm-usage')
     options.binary_location = os.path.join("/opt/render/project/.render/chrome/opt/google/chrome/")
     try:
-        driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)
+        driver = webdriver.Chrome(ChromeDriverManager(version='114.0.5735.90').install(),options=options)
     except Exception as e:
         return f"An error occurred initializing WebDriver: {e}"
 

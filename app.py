@@ -3,17 +3,7 @@ import base64
 import uuid
 import requests
 from flask import Flask, request, jsonify, render_template
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from pymongo import MongoClient
-import tempfile
-import threading
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from webdriver_manager.chrome import ChromeDriverManager
-
-
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -79,41 +69,6 @@ def translate_file(access_token, bucket_key, object_name):
     response.raise_for_status()
     return urn
 
-def upload_image(image_file_path):
-
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--remote-debugging-pipe')
-    options.add_argument('--disable-dev-shm-usage')
-    options.binary_location = os.path.join("/opt/render/project/.render/chrome/opt/google/chrome/")
-    try:
-        driver = webdriver.Chrome(ChromeDriverManager(version='114.0.5735.90').install(),options=options)
-    except Exception as e:
-        return f"An error occurred initializing WebDriver: {e}"
-
-    try:
-        driver.get("https://up-anh.vi-vn.vn/")
-
-        upload_input = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']"))
-        )
-        upload_input.send_keys(image_file_path)
-
-        input_element = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "image-url"))
-        )
-
-        uploaded_link = input_element.get_attribute("value")
-
-    except Exception as e:
-        uploaded_link = f"An error occurred during upload: {e}"
-
-    finally:
-        driver.quit()
-
-    return uploaded_link
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -166,17 +121,13 @@ def upload_file():
 
         urn = translate_file(access_token, bucket_key, rvt_filename)
 
-        with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(image_file.filename)[1]) as temp_file:
-            image_file.save(temp_file.name)
-            temp_file_path = temp_file.name
+        # Lưu file hình ảnh vào thư mục upload
+        image_filename = image_file.filename
+        image_file_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
+        image_file.save(image_file_path)
 
-        absolute_image_path = os.path.abspath(temp_file_path)
-
-        with ThreadPoolExecutor() as executor:
-            future = executor.submit(upload_image, absolute_image_path)
-            uploaded_link = future.result()
-
-        os.remove(temp_file_path)
+        # Đường dẫn tuyệt đối của hình ảnh được lưu
+        absolute_image_path = os.path.abspath(image_file_path)
 
         selected_collection = db[collection_name]
         doc = {
@@ -184,7 +135,7 @@ def upload_file():
             'location': location,
             'urn': urn,
             'filename': rvt_filename,
-            'linkanh': uploaded_link
+            'linkanh': absolute_image_path
         }
         selected_collection.insert_one(doc)
 
@@ -194,4 +145,4 @@ def upload_file():
         return jsonify({'message': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)

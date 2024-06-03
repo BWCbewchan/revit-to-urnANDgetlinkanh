@@ -68,85 +68,11 @@
         "documentation": {}
     },
     {
-        "label": "webdriver",
-        "importPath": "selenium",
-        "description": "selenium",
-        "isExtraImport": true,
-        "detail": "selenium",
-        "documentation": {}
-    },
-    {
-        "label": "By",
-        "importPath": "selenium.webdriver.common.by",
-        "description": "selenium.webdriver.common.by",
-        "isExtraImport": true,
-        "detail": "selenium.webdriver.common.by",
-        "documentation": {}
-    },
-    {
-        "label": "WebDriverWait",
-        "importPath": "selenium.webdriver.support.ui",
-        "description": "selenium.webdriver.support.ui",
-        "isExtraImport": true,
-        "detail": "selenium.webdriver.support.ui",
-        "documentation": {}
-    },
-    {
-        "label": "expected_conditions",
-        "importPath": "selenium.webdriver.support",
-        "description": "selenium.webdriver.support",
-        "isExtraImport": true,
-        "detail": "selenium.webdriver.support",
-        "documentation": {}
-    },
-    {
         "label": "MongoClient",
         "importPath": "pymongo",
         "description": "pymongo",
         "isExtraImport": true,
         "detail": "pymongo",
-        "documentation": {}
-    },
-    {
-        "label": "tempfile",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "tempfile",
-        "description": "tempfile",
-        "detail": "tempfile",
-        "documentation": {}
-    },
-    {
-        "label": "threading",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "threading",
-        "description": "threading",
-        "detail": "threading",
-        "documentation": {}
-    },
-    {
-        "label": "ThreadPoolExecutor",
-        "importPath": "concurrent.futures",
-        "description": "concurrent.futures",
-        "isExtraImport": true,
-        "detail": "concurrent.futures",
-        "documentation": {}
-    },
-    {
-        "label": "as_completed",
-        "importPath": "concurrent.futures",
-        "description": "concurrent.futures",
-        "isExtraImport": true,
-        "detail": "concurrent.futures",
-        "documentation": {}
-    },
-    {
-        "label": "ChromeDriverManager",
-        "importPath": "webdriver_manager.chrome",
-        "description": "webdriver_manager.chrome",
-        "isExtraImport": true,
-        "detail": "webdriver_manager.chrome",
         "documentation": {}
     },
     {
@@ -173,15 +99,6 @@
         "importPath": "app",
         "description": "app",
         "peekOfCode": "def translate_file(access_token, bucket_key, object_name):\n    urn = base64.urlsafe_b64encode(f'urn:adsk.objects:os.object:{bucket_key}/{object_name}'.encode()).decode().strip('=')\n    translate_url = 'https://developer.api.autodesk.com/modelderivative/v2/designdata/job'\n    headers = {\n        'Authorization': f'Bearer {access_token}',\n        'Content-Type': 'application/json'\n    }\n    translate_data = {\n        'input': {\n            'urn': urn",
-        "detail": "app",
-        "documentation": {}
-    },
-    {
-        "label": "upload_image",
-        "kind": 2,
-        "importPath": "app",
-        "description": "app",
-        "peekOfCode": "def upload_image(image_file_path):\n    options = webdriver.ChromeOptions()\n    options.add_argument('--headless')\n    options.add_argument('--no-sandbox')\n    options.add_argument('--remote-debugging-pipe')\n    options.add_argument('--disable-dev-shm-usage')\n    options.binary_location = os.path.join(\"/opt/render/project/.render/chrome/opt/google/chrome/\")\n    try:\n        driver = webdriver.Chrome(ChromeDriverManager(version='114.0.5735.90').install(),options=options)\n    except Exception as e:",
         "detail": "app",
         "documentation": {}
     },

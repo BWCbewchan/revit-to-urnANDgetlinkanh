@@ -150,6 +150,15 @@
         "documentation": {}
     },
     {
+        "label": "chromedriver_autoinstaller",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "chromedriver_autoinstaller",
+        "description": "chromedriver_autoinstaller",
+        "detail": "chromedriver_autoinstaller",
+        "documentation": {}
+    },
+    {
         "label": "get_access_token",
         "kind": 2,
         "importPath": "app",
@@ -181,7 +190,7 @@
         "kind": 2,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "def upload_image(image_file_path):\n    options = webdriver.ChromeOptions()\n    options.add_argument('--headless')\n    options.add_argument('--no-sandbox')\n    options.add_argument('--disable-dev-shm-usage')\n    try:\n        driver = webdriver.Chrome(ChromeDriverManager().install())\n    except Exception as e:\n        return f\"An error occurred initializing WebDriver: {e}\"\n    try:",
+        "peekOfCode": "def upload_image(image_file_path):\n    chromedriver_autoinstaller.install()\n    options = webdriver.ChromeOptions()\n    options.add_argument('--headless')\n    options.add_argument('--no-sandbox')\n    options.add_argument('--disable-dev-shm-usage')\n    try:\n        driver = webdriver.Chrome(ChromeDriverManager().install())\n    except Exception as e:\n        return f\"An error occurred initializing WebDriver: {e}\"",
         "detail": "app",
         "documentation": {}
     },

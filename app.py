@@ -12,6 +12,8 @@ import tempfile
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from webdriver_manager.chrome import ChromeDriverManager
+import chromedriver_autoinstaller
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -78,6 +80,7 @@ def translate_file(access_token, bucket_key, object_name):
     return urn
 
 def upload_image(image_file_path):
+    chromedriver_autoinstaller.install()
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')

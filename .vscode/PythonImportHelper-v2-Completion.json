@@ -1,0 +1,269 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "base64",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "base64",
+        "description": "base64",
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "uuid",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uuid",
+        "description": "uuid",
+        "detail": "uuid",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "render_template",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "webdriver",
+        "importPath": "selenium",
+        "description": "selenium",
+        "isExtraImport": true,
+        "detail": "selenium",
+        "documentation": {}
+    },
+    {
+        "label": "By",
+        "importPath": "selenium.webdriver.common.by",
+        "description": "selenium.webdriver.common.by",
+        "isExtraImport": true,
+        "detail": "selenium.webdriver.common.by",
+        "documentation": {}
+    },
+    {
+        "label": "WebDriverWait",
+        "importPath": "selenium.webdriver.support.ui",
+        "description": "selenium.webdriver.support.ui",
+        "isExtraImport": true,
+        "detail": "selenium.webdriver.support.ui",
+        "documentation": {}
+    },
+    {
+        "label": "expected_conditions",
+        "importPath": "selenium.webdriver.support",
+        "description": "selenium.webdriver.support",
+        "isExtraImport": true,
+        "detail": "selenium.webdriver.support",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "tempfile",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tempfile",
+        "description": "tempfile",
+        "detail": "tempfile",
+        "documentation": {}
+    },
+    {
+        "label": "threading",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
+        "documentation": {}
+    },
+    {
+        "label": "ThreadPoolExecutor",
+        "importPath": "concurrent.futures",
+        "description": "concurrent.futures",
+        "isExtraImport": true,
+        "detail": "concurrent.futures",
+        "documentation": {}
+    },
+    {
+        "label": "as_completed",
+        "importPath": "concurrent.futures",
+        "description": "concurrent.futures",
+        "isExtraImport": true,
+        "detail": "concurrent.futures",
+        "documentation": {}
+    },
+    {
+        "label": "ChromeDriverManager",
+        "importPath": "webdriver_manager.chrome",
+        "description": "webdriver_manager.chrome",
+        "isExtraImport": true,
+        "detail": "webdriver_manager.chrome",
+        "documentation": {}
+    },
+    {
+        "label": "get_access_token",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_access_token():\n    auth_url = 'https://developer.api.autodesk.com/authentication/v1/authenticate'\n    auth_data = {\n        'client_id': client_id,\n        'client_secret': client_secret,\n        'grant_type': 'client_credentials',\n        'scope': 'data:read data:write data:create bucket:create bucket:read'\n    }\n    response = requests.post(auth_url, data=auth_data, timeout=10)\n    response.raise_for_status()",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_bucket",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def create_bucket(access_token):\n    bucket_key = f'bucket_{uuid.uuid4()}'\n    bucket_url = 'https://developer.api.autodesk.com/oss/v2/buckets'\n    headers = {\n        'Authorization': f'Bearer {access_token}',\n        'Content-Type': 'application/json'\n    }\n    bucket_data = {\n        'bucketKey': bucket_key,\n        'policyKey': 'transient'",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "translate_file",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def translate_file(access_token, bucket_key, object_name):\n    urn = base64.urlsafe_b64encode(f'urn:adsk.objects:os.object:{bucket_key}/{object_name}'.encode()).decode().strip('=')\n    translate_url = 'https://developer.api.autodesk.com/modelderivative/v2/designdata/job'\n    headers = {\n        'Authorization': f'Bearer {access_token}',\n        'Content-Type': 'application/json'\n    }\n    translate_data = {\n        'input': {\n            'urn': urn",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "upload_image",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def upload_image(image_file_path):\n    options = webdriver.ChromeOptions()\n    options.add_argument('--headless')\n    options.add_argument('--no-sandbox')\n    options.add_argument('--disable-dev-shm-usage')\n    try:\n        driver = webdriver.Chrome(ChromeDriverManager().install())\n    except Exception as e:\n        return f\"An error occurred initializing WebDriver: {e}\"\n    try:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "index",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def index():\n    return render_template('index.html')\n@app.route('/collections', methods=['GET'])\ndef get_collections():\n    collections = db.list_collection_names()\n    return jsonify(collections)\n@app.route('/upload', methods=['POST'])\ndef upload_file():\n    if 'rvtFile' not in request.files or 'imageFile' not in request.files:\n        return jsonify({'message': 'No file part'})",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_collections",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_collections():\n    collections = db.list_collection_names()\n    return jsonify(collections)\n@app.route('/upload', methods=['POST'])\ndef upload_file():\n    if 'rvtFile' not in request.files or 'imageFile' not in request.files:\n        return jsonify({'message': 'No file part'})\n    rvt_file = request.files['rvtFile']\n    image_file = request.files['imageFile']\n    name = request.form.get('name')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "upload_file",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def upload_file():\n    if 'rvtFile' not in request.files or 'imageFile' not in request.files:\n        return jsonify({'message': 'No file part'})\n    rvt_file = request.files['rvtFile']\n    image_file = request.files['imageFile']\n    name = request.form.get('name')\n    location = request.form.get('location')\n    collection_name = request.form.get('collection')\n    if rvt_file.filename == '':\n        return jsonify({'message': 'No selected RVT file'})",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\napp.config['UPLOAD_FOLDER'] = 'uploads'\nclient_id = '8nDGPR55nVA4GWG46L7kayavng4osxT1V2HGAOMBCRQH692R'\nclient_secret = 'jyxdCnzmGoSz7tQSLo1OAgGGSIwuy2zUg5rbAMzLNpyyR62Innx0vJnMLc0odAuI'\nmongo_client = MongoClient('mongodb+srv://ngophuc2911:phuc29112003@cluster0.buhheri.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')\ndb = mongo_client['test']\n# Ensure the upload folder exists\nif not os.path.exists(app.config['UPLOAD_FOLDER']):\n    os.makedirs(app.config['UPLOAD_FOLDER'])\ndef get_access_token():",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app.config['UPLOAD_FOLDER']",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app.config['UPLOAD_FOLDER'] = 'uploads'\nclient_id = '8nDGPR55nVA4GWG46L7kayavng4osxT1V2HGAOMBCRQH692R'\nclient_secret = 'jyxdCnzmGoSz7tQSLo1OAgGGSIwuy2zUg5rbAMzLNpyyR62Innx0vJnMLc0odAuI'\nmongo_client = MongoClient('mongodb+srv://ngophuc2911:phuc29112003@cluster0.buhheri.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')\ndb = mongo_client['test']\n# Ensure the upload folder exists\nif not os.path.exists(app.config['UPLOAD_FOLDER']):\n    os.makedirs(app.config['UPLOAD_FOLDER'])\ndef get_access_token():\n    auth_url = 'https://developer.api.autodesk.com/authentication/v1/authenticate'",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "client_id",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "client_id = '8nDGPR55nVA4GWG46L7kayavng4osxT1V2HGAOMBCRQH692R'\nclient_secret = 'jyxdCnzmGoSz7tQSLo1OAgGGSIwuy2zUg5rbAMzLNpyyR62Innx0vJnMLc0odAuI'\nmongo_client = MongoClient('mongodb+srv://ngophuc2911:phuc29112003@cluster0.buhheri.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')\ndb = mongo_client['test']\n# Ensure the upload folder exists\nif not os.path.exists(app.config['UPLOAD_FOLDER']):\n    os.makedirs(app.config['UPLOAD_FOLDER'])\ndef get_access_token():\n    auth_url = 'https://developer.api.autodesk.com/authentication/v1/authenticate'\n    auth_data = {",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "client_secret",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "client_secret = 'jyxdCnzmGoSz7tQSLo1OAgGGSIwuy2zUg5rbAMzLNpyyR62Innx0vJnMLc0odAuI'\nmongo_client = MongoClient('mongodb+srv://ngophuc2911:phuc29112003@cluster0.buhheri.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')\ndb = mongo_client['test']\n# Ensure the upload folder exists\nif not os.path.exists(app.config['UPLOAD_FOLDER']):\n    os.makedirs(app.config['UPLOAD_FOLDER'])\ndef get_access_token():\n    auth_url = 'https://developer.api.autodesk.com/authentication/v1/authenticate'\n    auth_data = {\n        'client_id': client_id,",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "mongo_client",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "mongo_client = MongoClient('mongodb+srv://ngophuc2911:phuc29112003@cluster0.buhheri.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')\ndb = mongo_client['test']\n# Ensure the upload folder exists\nif not os.path.exists(app.config['UPLOAD_FOLDER']):\n    os.makedirs(app.config['UPLOAD_FOLDER'])\ndef get_access_token():\n    auth_url = 'https://developer.api.autodesk.com/authentication/v1/authenticate'\n    auth_data = {\n        'client_id': client_id,\n        'client_secret': client_secret,",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "db = mongo_client['test']\n# Ensure the upload folder exists\nif not os.path.exists(app.config['UPLOAD_FOLDER']):\n    os.makedirs(app.config['UPLOAD_FOLDER'])\ndef get_access_token():\n    auth_url = 'https://developer.api.autodesk.com/authentication/v1/authenticate'\n    auth_data = {\n        'client_id': client_id,\n        'client_secret': client_secret,\n        'grant_type': 'client_credentials',",
+        "detail": "app",
+        "documentation": {}
+    }
+]

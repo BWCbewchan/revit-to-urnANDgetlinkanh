@@ -11,6 +11,7 @@ from pymongo import MongoClient
 import tempfile
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from webdriver_manager.chrome import ChromeDriverManager
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -83,7 +84,7 @@ def upload_image(image_file_path):
     options.add_argument('--disable-dev-shm-usage')
 
     try:
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(ChromeDriverManager().install())
     except Exception as e:
         return f"An error occurred initializing WebDriver: {e}"
 
